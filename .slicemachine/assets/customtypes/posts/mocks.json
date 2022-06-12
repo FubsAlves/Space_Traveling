@@ -1,0 +1,71 @@
+{
+  "id": "c742e3d2-3a7e-4749-a5a9-0c91868b0beb",
+  "uid": "nulla-quia-tenetur",
+  "type": "posts",
+  "data": {
+    "title": "revolutionize front-end partnerships",
+    "subtitle": "grow killer niches",
+    "author": "iterate proactive partnerships",
+    "banner": {
+      "dimensions": {
+        "width": 900,
+        "height": 500
+      },
+      "alt": "Placeholder image",
+      "copyright": null,
+      "url": "https://images.unsplash.com/photo-1551739440-5dd934d3a94a?w=900&h=500&fit=crop"
+    },
+    "content": [
+      {
+        "heading": "cultivate dynamic solutions",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Ad cupidatat culpa enim Lorem. Consectetur elit minim commodo eiusmod nostrud culpa eiusmod laborum culpa consectetur.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "monetize revolutionary supply-chains",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Lorem ut esse officia. Consequat quis ex nulla reprehenderit. Adipisicing proident culpa id laboris cillum laboris occaecat ad ex et occaecat.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "e-enable collaborative e-markets",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Culpa culpa voluptate ipsum exercitation ut qui fugiat. Ea incididunt non id ex commodo elit. Aliquip esse adipisicing proident sunt velit ex ullamco aliqua minim incididunt cupidatat est pariatur anim.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "grow intuitive deliverables",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Aliquip laboris deserunt nisi. Do adipisicing pariatur aliquip voluptate laboris enim minim occaecat quis non laborum aliqua reprehenderit nisi.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "matrix visionary networks",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Labore tempor amet culpa. Consectetur mollit irure veniam enim pariatur voluptate ullamco consectetur dolor consectetur dolore veniam et est eu.",
+            "spans": []
+          }
+        ]
+      }
+    ]
+  }
+}
