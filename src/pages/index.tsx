@@ -6,6 +6,8 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { FiCalendar, FiUser } from "react-icons/fi";
+
 
 interface Post {
   uid?: string;
@@ -38,11 +40,40 @@ export default function Home(homeProps : HomeProps) {
         <div className={styles.logo}>
           <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
         </div>
-        <div>
-            <strong>title</strong>
-            <p>description</p>
-            <time>data</time>
-            <p>Autor</p>
+        <div className={styles.posts}>
+            <strong>Nam fringilla orci in finibus vestibulum</strong>
+            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
+            <time><FiCalendar /> 15/06/2022</time>
+            <cite><FiUser /> Maecenas</cite>
+
+            
+
+        </div>
+        <div className={styles.posts}>
+            <strong>Nam fringilla orci in finibus vestibulum</strong>
+            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
+            <time>15/06/2022</time>
+            <cite>Maecenas</cite>
+
+            
+
+        </div>
+        <div className={styles.posts}>
+            <strong>Nam fringilla orci in finibus vestibulum</strong>
+            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
+            <time>15/06/2022</time>
+            <cite>Maecenas</cite>
+
+            
+
+        </div>
+        <div className={styles.posts}>
+            <strong>Nam fringilla orci in finibus vestibulum</strong>
+            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
+            <time>15/06/2022</time>
+            <cite>Maecenas</cite>
+
+            
 
         </div>
       </main>

@@ -2,10 +2,43 @@
     display: flex-row;
     width: 100%;
 
+    .posts {
+        width: 720px;
+        margin: 5rem auto 0;
+
+        strong {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            
+            display:block;
+            
+        }
+
+        span {
+            font-size: 1.125rem;
+            color: var(--body-white);
+            margin-bottom: 1.125rem;
+
+            display: block;
+        }
+
+        time, cite {
+            color: var(--info-gray);
+            font-size: 0.875rem
+        }
+
+        time {
+            margin-right: 1.5rem;
+        }
+    }
+
 }
 
 .logo {
-    margin-top: 5.0rem;
-    margin-bottom: 3.6rem;
+  
+    margin: 5rem 0 auto 12.375rem;
     height: 30px;
+    
+    display: flex;
 }
