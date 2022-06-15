@@ -33,7 +33,6 @@ export default function Home(homeProps : HomeProps) {
     <>
     <Head>
       <title>SpaceTraveling | Home</title>
-      {console.log(homeProps)}
     </Head>
     <div className={commonStyles.container}>
       <main className={styles.content}>
@@ -41,40 +40,15 @@ export default function Home(homeProps : HomeProps) {
           <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
         </div>
         <div className={styles.posts}>
-            <strong>Nam fringilla orci in finibus vestibulum</strong>
-            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
-            <time><FiCalendar /> 15/06/2022</time>
-            <cite><FiUser /> Maecenas</cite>
 
             
-
-        </div>
-        <div className={styles.posts}>
-            <strong>Nam fringilla orci in finibus vestibulum</strong>
-            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
-            <time>15/06/2022</time>
-            <cite>Maecenas</cite>
-
+            <article>
+                <strong>Nam fringilla orci in finibus vestibulum</strong>
+                <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
+                <time><FiCalendar /> 15/06/2022</time>
+                <cite><FiUser /> Maecenas</cite>
+            </article>
             
-
-        </div>
-        <div className={styles.posts}>
-            <strong>Nam fringilla orci in finibus vestibulum</strong>
-            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
-            <time>15/06/2022</time>
-            <cite>Maecenas</cite>
-
-            
-
-        </div>
-        <div className={styles.posts}>
-            <strong>Nam fringilla orci in finibus vestibulum</strong>
-            <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
-            <time>15/06/2022</time>
-            <cite>Maecenas</cite>
-
-            
-
         </div>
       </main>
     </div>
