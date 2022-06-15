@@ -52,8 +52,12 @@ export default function Home(homeProps : HomeProps) {
               </a>
               </Link> 
           ))}
-            
+          
         </div>
+        <div className={styles.loadPosts}>
+          <a href='#'>Carregar mais posts</a>
+        </div>
+        
       </main>
     </div>
     </>
@@ -62,7 +66,7 @@ export default function Home(homeProps : HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsPagination = await prismic.getByType('posts', {pageSize: 10});
+  const postsPagination = await prismic.getByType('posts', {pageSize: 5});
 
   return {
     props: {
