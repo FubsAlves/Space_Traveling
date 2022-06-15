@@ -40,20 +40,16 @@ export default function Home(homeProps : HomeProps) {
           <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
         </div>
         <div className={styles.posts}>
-
-            
             <article>
                 <strong>Nam fringilla orci in finibus vestibulum</strong>
                 <span>Nunc nec orci in ex gravida rutrum. Duis eu dui accumsan sem cursus hendrerit vitae in augue.</span>
                 <time><FiCalendar /> 15/06/2022</time>
                 <cite><FiUser /> Maecenas</cite>
             </article>
-            
         </div>
       </main>
     </div>
     </>
-    
   )
 }
 
