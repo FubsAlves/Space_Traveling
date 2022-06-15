@@ -1,4 +1,6 @@
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -24,13 +26,39 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-// export default function Home() {
-//   // TODO
-// }
+export default function Home(homeProps : HomeProps) {
+  return(
+    <>
+    <Head>
+      <title>SpaceTraveling | Home</title>
+      {console.log(homeProps)}
+    </Head>
+    <div className={commonStyles.container}>
+      <main className={styles.content}>
+        <div className={styles.logo}>
+          <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
+        </div>
+        <div>
+            <strong>title</strong>
+            <p>description</p>
+            <time>data</time>
+            <p>Autor</p>
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient({});
-//   // const postsResponse = await prismic.getByType(TODO);
+        </div>
+      </main>
+    </div>
+    </>
+    
+  )
+}
 
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient({});
+  const postsResponse = await prismic.getByType('posts', {pageSize: 10});
+
+  return {
+    props: {
+      postsResponse
+    },
+  }
+};
