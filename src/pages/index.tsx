@@ -9,6 +9,9 @@ import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import { FiCalendar, FiUser } from "react-icons/fi";
 
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
 
 interface Post {
   uid?: string;
@@ -35,7 +38,6 @@ export default function Home(homeProps : HomeProps) {
     <Head>
       <title>SpaceTraveling | Home</title>
     </Head>
-    {console.log(homeProps.postsPagination.results)}
     <div className={commonStyles.container}>
       <main className={styles.content}>
         <div className={styles.logo}>
@@ -66,11 +68,26 @@ export default function Home(homeProps : HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsPagination = await prismic.getByType('posts', {pageSize: 5});
+  const postsFound = await prismic.getByType('posts', {pageSize: 5});
+  const postsPaginationDateFormatted = postsFound.results.map((post) => {
+      return {
+        ...post,
+        first_publication_date: format(
+          new Date(),
+           `dd MMM yyyy`,
+          {
+            locale: ptBR,
+          }
+        ) 
+      }
+  }) 
 
   return {
     props: {
-      postsPagination
+      postsPagination: {
+        results: [...postsPaginationDateFormatted],
+        next_page: postsFound.next_page,
+      }
     },
   }
 };
