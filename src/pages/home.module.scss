@@ -55,9 +55,15 @@
 
 .loadPosts {
     cursor: pointer;
+
+    border: none;
     margin-top: 4rem;
     margin-left: 12.375rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+
     color: var(--highlight-pink);
+    background: transparent;
 }
 
 .noMorePages {

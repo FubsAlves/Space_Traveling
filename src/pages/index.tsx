@@ -56,11 +56,7 @@ export default function Home({ postsPagination } : HomeProps) {
       const newPosts: Post[] = [...posts, ...nextPagePosts];
       setPosts(newPosts);
       setNextPage(response.next_page);
-    } else {
-      console.log(nextPage, 'equals to null');
     }
-    
-     
   }
   
   return(
@@ -86,9 +82,11 @@ export default function Home({ postsPagination } : HomeProps) {
           ))}
           
         </div>
-        <div className={`${styles.loadPosts} ${(nextPage === null) ? styles.noMorePages : ''}`}>
-          <a onClick={handleNextPage}>Carregar mais posts</a>
-        </div>
+        { nextPage && (
+           <button className={styles.loadPosts} onClick={handleNextPage}>
+            Carregar mais posts
+          </button>
+        )}
         
       </main>
     </div>
