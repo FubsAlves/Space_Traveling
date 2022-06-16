@@ -33,29 +33,31 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsPagination } : HomeProps) {
+export default function Home({ postsPagination } : HomeProps) : JSX.Element {
   const [posts, setPosts] = useState(postsPagination.results);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
-  const handleNextPage = async () => { 
+  const handleNextPage = async (): Promise<void> => { 
     if(nextPage) {
       const response = await fetch(nextPage).then(response => response.json());
-      const nextPagePosts = response.results.map(newPost => {
-        return {
-          ...newPost,
-          first_publication_date: format(
-            new Date(),
-             `dd MMM yyyy`,
-            {
-              locale: ptBR,
-            }
-          ) 
-        }
-      })
+      
+      const { results, next_page: newNextPage} = response;
 
-      const newPosts: Post[] = [...posts, ...nextPagePosts];
-      setPosts(newPosts);
-      setNextPage(response.next_page);
+      const newPosts = results.map((post: Post) => {
+        return {
+          uid: post.uid,
+          first_publication_date: post.first_publication_date,
+          data: {
+            title: post.data.title,
+            subtitle: post.data.subtitle,
+            author: post.data.author,
+          },
+        };
+      });
+
+      const updatedPosts: Post[] = [...posts, ...newPosts];
+      setPosts(updatedPosts);
+      setNextPage(newNextPage);
     }
   }
   
@@ -71,11 +73,16 @@ export default function Home({ postsPagination } : HomeProps) {
         </div>
         <div className={styles.posts}>
           {posts.map(post => (
-              <Link key={post.uid} href={`/posts/${post.uid}`}>
+              <Link key={post.uid} href={`/post/${post.uid}`}>
               <a href="#">
                 <strong>{post.data.title}</strong>
                 <span>{post.data.subtitle}</span>
-                <time><FiCalendar /> {post.first_publication_date}</time>
+                <time>
+                  <FiCalendar />
+                  {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+                        locale: ptBR,
+                      })}
+                </time>
                 <cite><FiUser /> {post.data.author}</cite>
               </a>
               </Link> 
@@ -96,25 +103,27 @@ export default function Home({ postsPagination } : HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsFound = await prismic.getByType('posts', {pageSize: 5});
-  const postsPaginationDateFormatted = postsFound.results.map((post) => {
-      return {
-        ...post,
-        first_publication_date: format(
-          new Date(),
-           `dd MMM yyyy`,
-          {
-            locale: ptBR,
-          }
-        ) 
-      }
-  }) 
+  const postsFound = await prismic.getByType('posts', {pageSize: 1});
+
+  const { next_page, results: posts } = postsFound;
+
+  const results = posts.map(post => {
+    return {
+      uid: post.uid,
+      first_publication_date: post.first_publication_date,
+      data: {
+        title: post.data.title,
+        subtitle: post.data.subtitle,
+        author: post.data.author,
+      },
+    };
+  });
+
 
   return {
     props: {
       postsPagination: {
-        results: [...postsPaginationDateFormatted],
-        next_page: postsFound.next_page,
+        results, next_page
       }
     },
   }
