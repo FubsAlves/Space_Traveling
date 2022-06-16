@@ -11,6 +11,7 @@ import { FiCalendar, FiUser } from "react-icons/fi";
 
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { useState } from 'react';
 
 
 interface Post {
@@ -32,7 +33,36 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home(homeProps : HomeProps) {
+export default function Home({ postsPagination } : HomeProps) {
+  const [posts, setPosts] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+
+  const handleNextPage = async () => { 
+    if(nextPage) {
+      const response = await fetch(nextPage).then(response => response.json());
+      const nextPagePosts = response.results.map(newPost => {
+        return {
+          ...newPost,
+          first_publication_date: format(
+            new Date(),
+             `dd MMM yyyy`,
+            {
+              locale: ptBR,
+            }
+          ) 
+        }
+      })
+
+      const newPosts: Post[] = [...posts, ...nextPagePosts];
+      setPosts(newPosts);
+      setNextPage(response.next_page);
+    } else {
+      console.log(nextPage, 'equals to null');
+    }
+    
+     
+  }
+  
   return(
     <>
     <Head>
@@ -44,7 +74,7 @@ export default function Home(homeProps : HomeProps) {
           <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
         </div>
         <div className={styles.posts}>
-          {homeProps.postsPagination.results.map(post => (
+          {posts.map(post => (
               <Link key={post.uid} href={`/posts/${post.uid}`}>
               <a href="#">
                 <strong>{post.data.title}</strong>
@@ -56,8 +86,8 @@ export default function Home(homeProps : HomeProps) {
           ))}
           
         </div>
-        <div className={styles.loadPosts}>
-          <a href='#'>Carregar mais posts</a>
+        <div className={`${styles.loadPosts} ${(nextPage === null) ? styles.noMorePages : ''}`}>
+          <a onClick={handleNextPage}>Carregar mais posts</a>
         </div>
         
       </main>
