@@ -1,18 +1,15 @@
+import { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
-
-import { getPrismicClient } from '../services/prismic';
-
-import commonStyles from '../styles/common.module.scss';
-import styles from './home.module.scss';
-import { FiCalendar, FiUser } from "react-icons/fi";
-
+import { motion } from 'framer-motion';
+import { GoCalendar } from 'react-icons/go';
+import { RiUser3Line } from 'react-icons/ri';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { useState } from 'react';
-
+import { getPrismicClient } from '../services/prismic';
+import styles from './home.module.scss';
+import commonStyles from '../styles/common.module.scss';
 
 interface Post {
   uid?: string;
@@ -33,79 +30,123 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsPagination } : HomeProps) : JSX.Element {
+const mainVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
+export default function Home({ postsPagination }: HomeProps): JSX.Element {
   const [posts, setPosts] = useState(postsPagination.results);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
-  const handleNextPage = async (): Promise<void> => { 
-    if(nextPage) {
-      const response = await fetch(nextPage).then(response => response.json());
-      
-      const { results, next_page: newNextPage} = response;
+  const loadMorePosts = async (): Promise<void> => {
+    const responseFetch = await fetch(nextPage).then(response =>
+      response.json()
+    );
+    const { results, next_page: fetchedNextPage } = responseFetch;
 
-      const newPosts = results.map((post: Post) => {
-        return {
-          uid: post.uid,
-          first_publication_date: post.first_publication_date,
-          data: {
-            title: post.data.title,
-            subtitle: post.data.subtitle,
-            author: post.data.author,
-          },
-        };
-      });
+    const fetchedPosts = results.map((post: Post) => {
+      return {
+        uid: post.uid,
+        first_publication_date: post.first_publication_date,
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        },
+      };
+    });
 
-      const updatedPosts: Post[] = [...posts, ...newPosts];
-      setPosts(updatedPosts);
-      setNextPage(newNextPage);
-    }
-  }
-  
-  return(
+    const updatedPosts = [...posts, ...fetchedPosts];
+
+    setPosts(updatedPosts);
+    setNextPage(fetchedNextPage);
+  };
+
+  return (
     <>
-    <Head>
-      <title>SpaceTraveling | Home</title>
-    </Head>
-    <div className={commonStyles.container}>
-      <main className={styles.content}>
-        <div className={styles.logo}>
-          <Image src='/logo.svg' width={225} layout='fixed' height={30} alt='logo'/>
-        </div>
-        <div className={styles.posts}>
-          {posts.map(post => (
-              <Link key={post.uid} href={`/post/${post.uid}`}>
-              <a href="#">
-                <strong>{post.data.title}</strong>
-                <span>{post.data.subtitle}</span>
-                <time>
-                  <FiCalendar />
-                  {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+      <Head>
+        <title>Início | spacetravelling</title>
+      </Head>
+
+      <motion.main
+        variants={mainVariants}
+        initial="hidden"
+        animate="visible"
+        className={commonStyles.container}
+      >
+        {posts.map(
+          ({
+            uid,
+            first_publication_date,
+            data: { author, subtitle, title },
+          }) => {
+            return (
+              <Link href={`/post/${uid}`} key={uid}>
+                <motion.a variants={itemVariants} className={styles.post}>
+                  <strong>{title}</strong>
+                  <p>{subtitle}</p>
+                  <div className={styles.time}>
+                    <time>
+                      <GoCalendar />
+                      {format(new Date(first_publication_date), 'dd MMM yyyy', {
                         locale: ptBR,
                       })}
-                </time>
-                <cite><FiUser /> {post.data.author}</cite>
-              </a>
-              </Link> 
-          ))}
-          
-        </div>
-        { nextPage && (
-           <button className={styles.loadPosts} onClick={handleNextPage}>
-            Carregar mais posts
-          </button>
+                    </time>
+                  </div>
+                  <div className={styles.user}>
+                    <span>
+                      <RiUser3Line />
+                      {author}
+                    </span>
+                  </div>
+                </motion.a>
+              </Link>
+            );
+          }
         )}
-        
-      </main>
-    </div>
+
+        {nextPage && (
+          <motion.button
+            variants={itemVariants}
+            className={styles.loadPosts}
+            onClick={loadMorePosts}
+          >
+            Carregar mais posts
+          </motion.button>
+        )}
+      </motion.main>
     </>
-  )
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsFound = await prismic.getByType('posts', {pageSize: 1});
+  const response = await prismic.getByType('post', {
+    fetch: ['publication.title', 'publication.content'],
+    pageSize: 1,
+  });
 
-  const { next_page, results: posts } = postsFound;
+  const { next_page, results: posts } = response;
 
   const results = posts.map(post => {
     return {
@@ -119,12 +160,8 @@ export const getStaticProps: GetStaticProps = async () => {
     };
   });
 
-
   return {
-    props: {
-      postsPagination: {
-        results, next_page
-      }
-    },
-  }
+    props: { postsPagination: { next_page, results } },
+    revalidate: 60 * 30, // 30 MINUTES
+  };
 };
